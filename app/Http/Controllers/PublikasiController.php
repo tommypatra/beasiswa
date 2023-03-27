@@ -260,7 +260,7 @@ class PublikasiController extends Controller
             $cari2 = FileBerita::where("file_id", $request['id'])->first();
             if (isset($cari1->id)) {
                 $file = $cari1->source;
-                if (Storage::disk('public')->exists($file)) {
+                if (Storage::exists($file)) {
                     Storage::delete($file);
                 }
                 $cari2->delete();
@@ -272,6 +272,6 @@ class PublikasiController extends Controller
             $retval['messages'] = [$e->getMessage()];
             DB::rollBack();
         }
-        return $retval;
+        return response()->json($retval);
     }
 }

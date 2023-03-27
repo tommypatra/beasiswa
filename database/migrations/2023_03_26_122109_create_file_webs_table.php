@@ -16,6 +16,7 @@ class CreateFileWebsTable extends Migration
         Schema::create('file_webs', function (Blueprint $table) {
             $table->id();
             $table->string("judul")->nullable();
+            $table->string("slug")->nullable();
             $table->text("deskripsi")->nullable();
             $table->date("tgl")->nullable();
             $table->foreignId("user_id")->nullable();

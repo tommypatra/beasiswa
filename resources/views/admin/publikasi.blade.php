@@ -133,22 +133,10 @@
             forced_root_block : false,            
         });
 
-        function convertToSlug() {
-            if($("#id-publikasi").val()!==""){
-                str = $("#tgl").val()+' '+$("#judul").val()+' '+Math.floor(Math.random() * 1000);
-                str = str.replace(/[`~!@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ').toLowerCase();
-                str = str.replace(/^\s+|\s+$/gm,'');
-                str = str.replace(/\s+/g, '-');   
-                $("#slug").val(str);
-            }
-        }
-
         $("#judul").change(function(){
-            convertToSlug();
-        });
-
-        $("#tgl").change(function(){
-            convertToSlug();
+            let slug=convertToSlug($(this).val(),$("#id-publikasi").val());
+            if(slug)
+                $("#slug").val(slug);
         });
 
         function init() {

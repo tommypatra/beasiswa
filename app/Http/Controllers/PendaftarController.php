@@ -213,7 +213,7 @@ class PendaftarController extends Controller
                 $vcari->update($datapost);
 
                 $file = $cari->source;
-                if (Storage::disk('public')->exists($file)) {
+                if (Storage::exists($file)) {
                     Storage::delete($file);
                 }
                 $cari->delete();
@@ -226,7 +226,7 @@ class PendaftarController extends Controller
             $retval['messages'] = [$e->getMessage()];
             DB::rollBack();
         }
-        return $retval;
+        return response()->json($retval);
     }
 
     public function upload(Request $request, $fldr)

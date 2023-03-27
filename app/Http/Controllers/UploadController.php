@@ -21,7 +21,7 @@ class UploadController extends Controller
 
     public function read(Request $request)
     {
-        $data = FileWeb::select('id', 'tgl', 'judul', 'deskripsi', 'aktif', 'user_id', 'file_id')
+        $data = FileWeb::select('id', 'tgl', 'judul', 'slug', 'deskripsi', 'aktif', 'user_id', 'file_id')
             ->with(["file", "user"]);
 
         return Datatables::of($data)->addIndexColumn()
@@ -35,30 +35,96 @@ class UploadController extends Controller
                 return '';
             })
             ->addColumn('file', function ($row) {
-                return '';
+                $src = asset('storage') . "/" . $row->file->path;
+                $retval = '<a href="' . $src . '" target="_blank">Download</a>';
+                if ($row->file->is_image)
+                    $retval = '<a href="' . $src . '" target="_blank"><img src="' . $src . '" width="100%"></a>';
+                return $retval;
             })
             ->addColumn('cek', function ($row) {
                 return "<input type='checkbox' class='cekbaris' value='" . $row->id . "'>";
             })
             ->addColumn('action', function ($row) {
-                $btn = '<button type="button" class="btn btn-sm btn-danger btn-hapus" data-id="' . $row->id . '">
+                $btn = '<button type="button" class="btn btn-sm btn-danger btn-hapus" data-id="' . $row->id . '" data-fileid="' . $row->file_id . '">
                             <span class="material-icons">delete_forever</span>
                         </button>';
                 return $btn;
             })
-            ->rawColumns(['no', 'file', 'user', 'aktif', 'action', 'cek'])
+            ->rawColumns(['no', 'deskripsi', 'file', 'user', 'aktif', 'action', 'cek'])
             ->make(true);
     }
 
-    public static function upload(Request $request)
+    public function create(Request $request)
+    {
+        $retval = array("status" => false, "insert" => true, "messages" => ["gagal, hubungi admin"]);
+        $rules = [
+            'judul' => 'required',
+            'tgl' => 'required',
+            'slug' => 'required|unique:file_webs,slug',
+            'fileupload' => 'required',
+            'aktif' => 'required',
+        ];
+
+        $niceNames = [
+            'tgl' => 'tanggal',
+        ];
+
+        $datapost = $this->validate($request, $rules, [], $niceNames);
+
+        $resUpload = UploadController::upload($request, 'dokumen', 'jpeg,png,jpg,gif,svg,pdf')->getData();
+        $datapost['deskripsi'] = $request['deskripsi'];
+        unset($datapost['fileupload']);
+        if ($resUpload->status) {
+            try {
+                $datapost['file_id'] = $resUpload->id;
+                $datapost['user_id'] = auth()->user()->id;
+                DB::beginTransaction();
+                FileWeb::create($datapost);
+                DB::commit();
+            } catch (\Throwable $e) {
+                $retval['messages'] = [$e->getMessage()];
+                DB::rollBack();
+            }
+        }
+
+        $retval["status"] = true;
+        $retval["messages"] = ["Simpan data berhasil dilakukan"];
+
+        return response()->json($retval);
+    }
+
+    public function delete(Request $request)
+    {
+        $retval = array("status" => false, "messages" => ["maaf, gagal dilakukan"]);
+        try {
+            DB::beginTransaction();
+            $ids = $request['id'];
+            $cari = FileWeb::where("id", $ids)->first();
+            $file_id = $cari->file_id;
+
+            FileWeb::whereIn('id', $ids)->delete();
+            $stsUpload = UploadController::uploadDelete($file_id)->getData();
+            if ($stsUpload->status) {
+                $retval = array("status" => true, "messages" => ["berhasil terhapus"]);
+                DB::commit();
+            } else {
+                DB::rollBack();
+            }
+        } catch (\Throwable $e) {
+            $retval['messages'] = [$e->getMessage()];
+            DB::rollBack();
+        }
+        return response()->json($retval);
+    }
+
+    public function upload(Request $request, $fldr, $mime)
     {
         $retval = array("status" => false, "insert" => true, "messages" => ["gagal, hubungi admin"]);
 
         if ($request->hasFile('fileupload')) {
             $this->validate($request, [
-                'fileupload' => ['mimes:jpeg,png,jpg,gif,svg,pdf', 'max:1024'],
+                'fileupload' => ['mimes:' . $mime, 'max:6144'],
             ]);
-
             try {
                 $file = $request->file('fileupload');
                 $ext = $file->getClientOriginalExtension();
@@ -68,17 +134,19 @@ class UploadController extends Controller
                     "mime" => $file->getMimeType(),
                     "ext" => $ext,
                 ];
+                $datapost['user_id'] = auth()->user()->id;
                 $datapost['detail'] = json_encode($det);
                 $datapost['is_image'] = "1";
                 if (strtolower($ext) == "pdf") {
                     $datapost['is_image'] = "0";
                 }
-                $destinationPath = 'uploads/' . date('Y') . '/' . date('m');
+                $destinationPath = 'uploads/' . $fldr . '/' . date('Y') . '/' . date('m');
                 $datapost['is_file'] = "1";
-                $datapost['source'] = $file->store($destinationPath);
+                $datapost['path'] = $file->store($destinationPath);
 
                 DB::beginTransaction();
-                $id = FileUpload::create($datapost)->id;
+                $id = File::create($datapost)->id;
+                $retval["id"] = $id;
                 $retval["status"] = true;
                 $retval["messages"] = ["Simpan data berhasil dilakukan"];
                 DB::commit();
@@ -87,20 +155,19 @@ class UploadController extends Controller
                 DB::rollBack();
             }
         }
+        //dd($retval);
         return response()->json($retval);
     }
 
-    public static function uploadDelete(Request $request)
+    public static function uploadDelete($id)
     {
         $retval = array("status" => false, "messages" => ["maaf, gagal dilakukan"]);
         try {
             DB::beginTransaction();
-
-            $cari = File::where("id", $request['id'])->first();
-
-            if (isset($cari->id)) {
-                $file = $cari->source;
-                if (Storage::disk('public')->exists($file)) {
+            $cari = File::where("id", $id)->first();
+            if ($cari->id) {
+                $file = $cari->path;
+                if (Storage::exists($file)) {
                     Storage::delete($file);
                 }
                 $cari->delete();
@@ -111,6 +178,6 @@ class UploadController extends Controller
             $retval['messages'] = [$e->getMessage()];
             DB::rollBack();
         }
-        return $retval;
+        return response()->json($retval);
     }
 }

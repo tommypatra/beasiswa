@@ -68,29 +68,29 @@
                         </div>
                     </div>
                     <div class="row input-group input-group-outline">
-                        <label class="col-form-label">Slug/ Tanggal</label>
+                        <label class="col-form-label">Tanggal/ Slug</label>
                         <div class="col-sm-4 mb-3">
                             <input type="text" class="form-control datepicker validate[required]" name="tgl" id="tgl" placeholder="tanggal" value="{{ date('Y-m-d') }}">
                         </div>
-                        <div class="col-sm-8 ">
-                            <input type="text" class="form-control" name="slug" id="slug" placeholder="slug">
-                        </div>
-                    </div>
-                    <div class="row input-group input-group-outline">
-                        <label class="col-form-label">Kategori</label>
-                        <div class="col-sm-4">
-                            <select class="form-control validate[required]" name="kategori_id" id="kategori">                                
-                            </select>
+                        <div class="col-sm-6 mb-3">
+                            <input type="text" class="form-control validate[required]" name="slug" id="slug" placeholder="slug" >
                         </div>
                     </div>
 
                     <div class="row input-group input-group-outline">
                         <div class="col-sm-12">
                             <label class="col-form-label">deskripsi</label>
-                            <textarea class="validate[required]" name="deskripsi" id="deskripsi"></textarea>
+                            <textarea name="deskripsi" id="deskripsi"></textarea>
                         </div>
                     </div>
                     
+                    <div class="row input-group input-group-outline">
+                        <div class="col-sm-12">
+                            <label class="col-form-label">File</label>
+                            <input style="font-size:10px;" class="fileupload validate[required]" type="file" name="fileupload">                        
+                        </div>
+                    </div>
+
                     <div class="row input-group input-group-outline">
                         <label class="col-form-label">Aktif</label>
                         <div class="col-sm-4">
@@ -125,6 +125,12 @@
         $('.datepicker').bootstrapMaterialDatePicker({
             weekStart: 0,
             time: false,
+        });
+
+        $("#judul").change(function(){
+            let slug=convertToSlug($(this).val(),$("#id-publikasi").val());
+            if(slug)
+                $("#slug").val(slug);
         });
 
         tinymce.init({
@@ -210,7 +216,6 @@
 
         function resetForm(){
             $('#fupload')[0].reset();
-            $('#id').val("");
             $('#id-upload').val("");
             $('#aktif').val("").trigger('change');
             tinymce.get('deskripsi').setContent('');
@@ -229,12 +234,15 @@
         $("#fupload").submit(function(e) {
             e.preventDefault();
             tinymce.triggerSave();
-            let formVal = $(this).serializeArray();
-            formVal.push({name:"_token",value:$("meta[name='csrf-token']").attr("content")});
+            var form = $(this)[0];
+            let formVal = new FormData(form);
+            //formVal.append("ktm", $("#ktm")[0].files[0]); 
+            formVal.append("_token", $("meta[name='csrf-token']").attr("content")); 
             if($(this).validationEngine('validate')){
-                appAjaxUpload('{{ route("upload-create") }}', $.param(formVal)).done(function(vRet) {
+                appAjaxUpload('{{ route("upload-create") }}', formVal).done(function(vRet) {
                     if(vRet.status){
                         refresh();
+                        resetForm();
                     }
                     showmymessage(vRet.messages,vRet.status);
                 });

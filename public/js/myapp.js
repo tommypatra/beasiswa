@@ -104,3 +104,17 @@ function replaceNull(someObj, replaceValue = "") {
     String(value) === "null" || String(value) === "undefined" ? replaceValue : value; 
   return JSON.parse( JSON.stringify(someObj, replacer));
 }
+
+function convertToSlug(pjudul="",pidchek="") {
+  let str = '';
+  if(pidchek=="" && pjudul!==""){
+      let vdt = new Date();
+      let vtime = vdt.getMinutes() +''+  vdt.getHours() +''+  vdt.getSeconds();
+      let vtgl = vdt.getDate() +''+  vdt.getYear() +''+  vdt.getMonth();
+      str = pjudul+'-'+vtime+'-'+Math.floor(Math.random() * 10000)+'-'+vtgl;
+      str = str.replace(/[`~!@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ').toLowerCase();
+      str = str.replace(/^\s+|\s+$/gm,'');
+      str = str.replace(/\s+/g, '-');   
+  }
+  return str;  
+}
