@@ -16,6 +16,7 @@ class CreateBeasiswasTable extends Migration
         Schema::create('beasiswas', function (Blueprint $table) {
             $table->id();
             $table->string("nama", 150)->nullable();
+            $table->year("tahun")->nullable();
             $table->date("daftar_mulai")->nullable();
             $table->date("daftar_selesai")->nullable();
             $table->date("verifikasi_mulai")->nullable();

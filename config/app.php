@@ -17,6 +17,7 @@ return [
 
     'appname' => 'Beasiswa',
     'appversion' => '1.0',
+    'apptahun' => 2023,
     'appdesc' => 'Aplikasi Manajemen Beasiswa',
 
     /*
@@ -71,7 +72,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Makassar',
 
     /*
     |--------------------------------------------------------------------------

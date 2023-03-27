@@ -21,7 +21,7 @@ class UploadController extends Controller
 
     public function read(Request $request)
     {
-        $data = FileWeb::select('id', 'tgl', 'judul', 'slug', 'deskripsi', 'aktif', 'user_id', 'file_id')
+        $data = FileWeb::select('id', 'tgl', 'judul', 'slug', 'view', 'deskripsi', 'aktif', 'user_id', 'file_id')
             ->with(["file", "user"]);
 
         return Datatables::of($data)->addIndexColumn()
@@ -76,6 +76,7 @@ class UploadController extends Controller
         unset($datapost['fileupload']);
         if ($resUpload->status) {
             try {
+                $datapost['view'] = 0;
                 $datapost['file_id'] = $resUpload->id;
                 $datapost['user_id'] = auth()->user()->id;
                 DB::beginTransaction();
@@ -140,7 +141,7 @@ class UploadController extends Controller
                 if (strtolower($ext) == "pdf") {
                     $datapost['is_image'] = "0";
                 }
-                $destinationPath = 'uploads/' . $fldr . '/' . date('Y') . '/' . date('m');
+                $destinationPath = $fldr . '/' . date('Y') . '/' . date('m');
                 $datapost['is_file'] = "1";
                 $datapost['path'] = $file->store($destinationPath);
 

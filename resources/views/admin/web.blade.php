@@ -46,6 +46,7 @@
   @yield('head')
 
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  <script src="js/define.js"></script>
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -168,7 +169,6 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="material/assets/js/material-dashboard.min.js?v=3.0.4"></script>
-  <script src="js/define.js"></script>
   <script src="plugins/loading/loading.js"></script>
   <script src="plugins/toaster/js/bootstrap-toaster.min.js"></script>
   <script src="plugins/select2/dist/js/select2.min.js"></script>

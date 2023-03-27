@@ -13,7 +13,7 @@
         <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                 <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                    <h6 class="text-white text-capitalize ps-3">Upload Web</h6>
+                    <h6 class="text-white text-capitalize ps-3">Publikasi Website</h6>
                 </div>
             </div>
             <div class="card-body pb-2">
@@ -26,11 +26,11 @@
                                     <tr>
                                         <th><input type="checkbox" class="cekSemua"></th>
                                         <th>No</th>
-                                        <th>Tanggal</th>
-                                        <th>Judul</th>
-                                        <th>Deskripsi</th>
-                                        <th>File</th>
-                                        <th>View</th>
+                                        <th>Tahun</th>
+                                        <th>Beasiswa</th>
+                                        <th>Jenis</th>
+                                        <th>Pendaftaran</th>
+                                        <th>Verifikasi</th>
                                         <th>Aktif</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -51,44 +51,56 @@
 
 
 <!-- MULAI MODAL -->
-<div class="modal fade modal-lg" id="modal-upload" role="dialog">
+<div class="modal fade modal-lg" id="modal-beasiswa" role="dialog">
     <div class="modal-dialog">
-        <form id="fupload">
-            <input type="hidden" name="id" id="id-upload">
+        <form id="fbeasiswa">
+            <input type="hidden" name="id" id="id-beasiswa">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">FORM UPLOAD WEB</h5>
+                    <h5 class="modal-title">FORM PUBLIKASI WEB</h5>
                     <button type="button" class="btn btn-sm" data-bs-dismiss="modal" aria-label="Close">X</button>
                 </div>
                 <div class="modal-body ">
 
                     <div class="row input-group input-group-outline">
-                        <label class="col-form-label">Judul</label>
+                        <label class="col-form-label">Beasiswa</label>
                         <div class="col-sm-12">
-                            <input type="text" class="form-control validate[required]" name="judul" id="judul" placeholder="judul">
-                        </div>
-                    </div>
-                    <div class="row input-group input-group-outline">
-                        <label class="col-form-label">Tanggal/ Slug</label>
-                        <div class="col-sm-4 mb-3">
-                            <input type="text" class="form-control datepicker validate[required]" name="tgl" id="tgl" placeholder="tanggal" value="{{ date('Y-m-d') }}">
-                        </div>
-                        <div class="col-sm-6 mb-3">
-                            <input type="text" class="form-control validate[required]" name="slug" id="slug" placeholder="slug" >
+                            <input type="text" class="form-control validate[required]" name="nama" id="nama" placeholder="beasiswa">
                         </div>
                     </div>
 
                     <div class="row input-group input-group-outline">
-                        <div class="col-sm-12">
-                            <label class="col-form-label">deskripsi</label>
-                            <textarea name="deskripsi" id="deskripsi"></textarea>
+                        <div class="col-sm-6">
+                            <label class="col-form-label">Jenis</label>
+                            <select class="form-control validate[required]" name="jenis_id" id="jenis_id">                                
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="col-form-label">Tahun</label>
+                            <select class="form-control validate[required]" name="tahun" id="tahun">                                
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row input-group input-group-outline">
+                        <div class="col-sm-4">
+                            <label class="col-form-label">Daftar Mulai</label>
+                            <input type="text" class="form-control validate[required] datepicker" name="daftar_mulai" id="daftar_mulai" value="{{ date('Y-m-d') }}">
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="col-form-label">Daftar Selesai</label>
+                            <input type="text" class="form-control validate[required] datepicker" name="daftar_selesai" id="daftar_selesai" value="{{ date('Y-m-d') }}">
                         </div>
                     </div>
                     
                     <div class="row input-group input-group-outline">
-                        <div class="col-sm-12">
-                            <label class="col-form-label">File</label>
-                            <input style="font-size:10px;" class="fileupload validate[required]" type="file" name="fileupload">                        
+                        <div class="col-sm-4">
+                            <label class="col-form-label">Verifikasi Mulai</label>
+                            <input type="text" class="form-control validate[required] datepicker" name="verifikasi_mulai" id="verifikasi_mulai" value="{{ date('Y-m-d') }}">
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="col-form-label">Verifikasi Selesai</label>
+                            <input type="text" class="form-control validate[required] datepicker" name="verifikasi_selesai" id="verifikasi_selesai" value="{{ date('Y-m-d') }}">
                         </div>
                     </div>
 
@@ -122,23 +134,30 @@
     <script src="plugins/tinymce/tinymce.min.js"></script>
     <script type="text/javascript">
         sel2_aktif2("#aktif");
+        sel2_tahun("#tahun",parseInt("{{ config('app.apptahun') }} "));
+        sel2_datalokal("#jenis_id");
+
 
         $('.datepicker').bootstrapMaterialDatePicker({
             weekStart: 0,
             time: false,
         });
 
-        $("#judul").change(function(){
-            let slug=convertToSlug($(this).val(),$("#id-publikasi").val());
-            if(slug)
-                $("#slug").val(slug);
-        });
-
-        tinymce.init({
-            selector:'#deskripsi',
-            mode : 'textareas',
-            forced_root_block : false,            
-        });
+        init();
+        function init() {
+            let formVal={_token:$("meta[name='csrf-token']").attr("content")};
+            appAjax('{{ route("beasiswa-init") }}', formVal).done(function(vRet) {
+                if(vRet.status){
+                    let data=vRet.data.jenis;
+                    $('#jenis_id').empty();
+                    if(data.length>0){
+                        $.each(data, function( key, dp ) {
+                            $("#jenis_id").append($('<option>', {value:dp.id, text: dp.jenis}));
+                        });
+                    }                    
+                }
+            });
+        };
 
         var dtTable = $('.datatable').DataTable({
             processing: true,
@@ -149,7 +168,7 @@
                 ["25", "50", "75", "Semua"]
             ],
             ajax: {
-                url: "{{ route('upload-read') }}",
+                url: "{{ route('beasiswa-read') }}",
                 dataType: "json",
                 type: "POST",
                 data: function (d) {
@@ -160,8 +179,7 @@
                 },
             },
             "order": [
-                [2, "desc"],
-                [6, "asc"],
+                [2, "asc"],
             ],
             dom: '<"row"<"col-sm-6"B><"col-sm-6"f>> rt <"row"<"col-sm-4"l><"col-sm-4"i><"col-sm-4"p>>',
             language: {
@@ -187,11 +205,11 @@
             columns: [
                 {data: 'cek',className: "text-center", width:"5%", orderable: false, searchable: false},
                 {data: 'no', width:"5%",searchable: false},
-                {data: 'tgl', width:"10%",},
-                {data: 'judul', width:"30%"},
-                {data: 'deskripsi', width:"25%"},
-                {data: 'file', width:"20%",orderable: false, searchable: false},
-                {data: 'view', width:"5%"},
+                {data: 'tahun', width:"5%",},
+                {data: 'nama', width:"50%",},
+                {data: 'jenis', width:"15%",orderable: false, searchable: false},
+                {data: 'daftar', width:"10%",orderable: false, searchable: false},
+                {data: 'verifikasi', width:"10%",orderable: false, searchable: false},
                 {data: 'aktif', width:"5%",orderable: false, searchable: false},
                 {data: 'action', width:"5%",className: "text-center", orderable: false, searchable: false},
             ],
@@ -217,15 +235,29 @@
         }
 
         function resetForm(){
-            $('#fupload')[0].reset();
-            $('#id-upload').val("");
+            $('#fbeasiswa')[0].reset();
+            $('#id-beasiswa').val("");
+            $('#jenis_id').val("").trigger('change');
+            $('#tahun').val("").trigger('change');
             $('#aktif').val("").trigger('change');
-            tinymce.get('deskripsi').setContent('');
         };
+
+        function fillform(vdt){
+            let dt=vdt[0];
+            $('#id-beasiswa').val(dt.id);
+            $('#nama').val(dt.nama);
+            $('#daftar_mulai').val(dt.daftar_mulai);
+            $('#daftar_selesai').val(dt.daftar_selesai);
+            $('#verifikasi_mulai').val(dt.verifikasi_mulai);
+            $('#verifikasi_selesai').val(dt.verifikasi_selesai);
+            $('#tahun').val(dt.tahun).trigger('change');
+            $('#jenis_id').val(dt.jenis_id).trigger('change');
+            $('#aktif').val(dt.aktif).trigger('change');
+        }
 
         function tambah(){
             resetForm();
-            var myModal1 = new bootstrap.Modal(document.getElementById('modal-upload'), {
+            var myModal1 = new bootstrap.Modal(document.getElementById('modal-beasiswa'), {
                 backdrop: 'static',
                 keyboard: false,
             });
@@ -233,29 +265,51 @@
             //loadModal();
         }
 
-        $("#fupload").submit(function(e) {
+        $("#fbeasiswa").submit(function(e) {
             e.preventDefault();
             tinymce.triggerSave();
-            var form = $(this)[0];
-            let formVal = new FormData(form);
-            //formVal.append("ktm", $("#ktm")[0].files[0]); 
-            formVal.append("_token", $("meta[name='csrf-token']").attr("content")); 
+            let formVal = $(this).serializeArray();
+            formVal.push({name:"_token",value:$("meta[name='csrf-token']").attr("content")});
             if($(this).validationEngine('validate')){
-                appAjaxUpload('{{ route("upload-create") }}', formVal).done(function(vRet) {
+                appAjax('{{ route("beasiswa-save") }}', $.param(formVal)).done(function(vRet) {
+                    //resetForm();
+                    refresh();
                     if(vRet.status){
-                        refresh();
-                        resetForm();
+                        $('#id-beasiswa').val(vRet.id);
                     }
                     showmymessage(vRet.messages,vRet.status);
                 });
             }
         });
 
+        //ganti
+        $(document).on("click",".btn-ganti",function(){
+            resetForm();
+            var formVal={
+                _token:$("meta[name='csrf-token']").attr("content"),
+                srchFld:'id',
+                srchGrp:'where',
+                srchVal:$(this).data("id")
+            };
+            appAjax("{{ route('beasiswa-search') }}", formVal).done(function(vRet) {
+                if(vRet.status){
+                    var myModal = new bootstrap.Modal(document.getElementById('modal-beasiswa'), {
+                        backdrop: 'static',
+                        keyboard: false,
+                    });
+                    myModal.toggle();
+                    fillform(vRet.data);
+                }else{
+                    showmymessage(vRet.messages,vRet.status);
+                }
+            });
+        })
+
         //hapus
         function hapus(idTerpilih){
             var formVal={_token:$("meta[name='csrf-token']").attr("content"),id:idTerpilih};
             if(idTerpilih.length > 0 && confirm("apakah anda yakin?")){
-                appAjax("{{ route('upload-delete') }}", formVal).done(function(vRet) {
+                appAjax("{{ route('beasiswa-delete') }}", formVal).done(function(vRet) {
                     if(vRet.status){
                         refresh();
                     }
@@ -280,5 +334,7 @@
             hapus(idTerpilih);
         })
         //akhir hapus      
+
+
     </script>
 @endsection

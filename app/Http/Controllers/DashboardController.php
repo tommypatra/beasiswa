@@ -13,6 +13,8 @@ class DashboardController extends Controller
         //dd(session()->all());
         //dd(session()->get("user")->fotoUser);
         //dd(session()->get("akses"));
+        //dd(session()->get("akunId"));
+
 
         return view('admin.dashboard');
     }

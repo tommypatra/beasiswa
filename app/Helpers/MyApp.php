@@ -97,6 +97,57 @@ class MyApp
         return $waktu;
     }
 
+    public static function labeltanggal($vtgl1 = null, $vtgl2 = null, $checktgl = true)
+    {
+        $status = false;
+        $label = "";
+        $sekarang = date("Y-m-d");
+        $vtgl1 = ($vtgl1) ? date("Y-m-d", strtotime($vtgl1)) : date("Y-m-d");
+        $vtgl2 = ($vtgl2) ? date("Y-m-d", strtotime($vtgl2)) : date("Y-m-d");
+
+        if ($vtgl1 == $vtgl2) {
+            $checktgl = false;
+        }
+
+        $bgclr = "default";
+        $label = "";
+        if ($checktgl) {
+            if ($vtgl1 == $vtgl2)
+                $label = "";
+            elseif ($vtgl1 > $sekarang && $vtgl2 > $sekarang) {
+                $bgclr = "warning";
+                $label = "Belum";
+            } elseif ($vtgl1 < $sekarang && $vtgl2 < $sekarang) {
+                $bgclr = "danger";
+                $label = "Tertutup";
+            } else {
+                $bgclr = "success";
+                $label = "Terbuka";
+                $status = true;
+            }
+        } else {
+            if ($vtgl1 > $sekarang) {
+                $bgclr = "primary";
+                $label = "Belum";
+            } elseif ($vtgl1 < $sekarang) {
+                $bgclr = "warning";
+                $label = "Selesai";
+            } else {
+                $bgclr = "success";
+                $label = "Terbuka";
+                $status = true;
+            }
+        }
+        $retval = array(
+            "status" => $status,
+            "bgclr" => $bgclr,
+            "label" => $label,
+            "labelbadge" => "<span class='badge bg-" . $bgclr . "'>" . $label . "</span>",
+        );
+        return $retval;
+    }
+
+
     public static function generateToken($length = 32)
     {
         $randomString = "";

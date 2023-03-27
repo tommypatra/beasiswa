@@ -18,12 +18,6 @@
                 <span class="sidenav-normal  ms-2  ps-1"> File Upload</span>
                 </a>
             </li>
-            <li class="nav-item ">
-              <a class="nav-link text-white" href="https://material-dashboard-pro-laravel.creative-tim.com/users-management">
-              <span class="sidenav-mini-icon"><i class="material-icons opacity-10">navigate_next</i></span>
-              <span class="sidenav-normal  ms-2  ps-1"> Galleri</span>
-              </a>
-          </li>
-    </ul>
+        </ul>
     </div>    
-  </li>    
+</li>    

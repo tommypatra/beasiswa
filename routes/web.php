@@ -10,7 +10,7 @@ use App\Http\Controllers\PendaftarController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\UploadController;
-
+use App\Http\Controllers\BeasiswaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +48,14 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::middleware(['akses'])->group(function () {
         Route::get('/set-akses/{id}/{akunId}', [LoginController::class, 'setAkses'])->name('set-akses');
+
+        //beasiswa
+        Route::get('/beasiswa', [BeasiswaController::class, 'index'])->name('beasiswa');
+        Route::post('/beasiswa-init', [BeasiswaController::class, 'init'])->name('beasiswa-init');
+        Route::post('/beasiswa-read', [BeasiswaController::class, 'read'])->name('beasiswa-read');
+        Route::post('/beasiswa-save', [BeasiswaController::class, 'save'])->name('beasiswa-save');
+        Route::post('/beasiswa-delete', [BeasiswaController::class, 'delete'])->name('beasiswa-delete');
+        Route::post('/beasiswa-search', [BeasiswaController::class, 'search'])->name('beasiswa-search');
 
         //upload
         Route::get('/upload', [UploadController::class, 'index'])->name('upload');

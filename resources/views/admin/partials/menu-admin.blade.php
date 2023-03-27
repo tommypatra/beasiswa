@@ -9,7 +9,7 @@
       <div class="collapse" id="menuBeasiswa" style="">
           <ul class="nav ">
               <li class="nav-item ">
-                  <a class="nav-link text-white" href="https://material-dashboard-pro-laravel.creative-tim.com/user-profile">
+                  <a class="nav-link text-white" href="{{ route('beasiswa') }}">
                   <span class="sidenav-mini-icon"><i class="material-icons opacity-10">navigate_next</i></span>
                   <span class="sidenav-normal  ms-2  ps-1"> Jadwal</span>
                   </a>
@@ -58,47 +58,30 @@
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">web</i>
         </div>
-        <span class="nav-link-text ms-1">Berita</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-white " href="material/pages/billing.html">
-        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-          <i class="material-icons opacity-10">receipt_long</i>
-        </div>
-        <span class="nav-link-text ms-1">Struktur Organisasi</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-white " href="material/pages/billing.html">
-        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-          <i class="material-icons opacity-10">receipt_long</i>
-        </div>
-        <span class="nav-link-text ms-1">Tentang Kami</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-white " href="material/pages/billing.html">
-        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-          <i class="material-icons opacity-10">receipt_long</i>
-        </div>
-        <span class="nav-link-text ms-1">Sejarah</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-white " href="material/pages/virtual-reality.html">
-        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-          <i class="material-icons opacity-10">view_in_ar</i>
-        </div>
         <span class="nav-link-text ms-1">Pendaftar</span>
       </a>
     </li>
-
     <li class="nav-item">
-      <a class="nav-link text-white " href="material/pages/notifications.html">
+      <a class="nav-link text-white " href="material/pages/billing.html">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-          <i class="material-icons opacity-10">notifications</i>
+          <i class="material-icons opacity-10">receipt_long</i>
         </div>
-        <span class="nav-link-text ms-1">Notifications</span>
+        <span class="nav-link-text ms-1">Penguji</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white " href="material/pages/billing.html">
+        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+          <i class="material-icons opacity-10">receipt_long</i>
+        </div>
+        <span class="nav-link-text ms-1">Pembagian</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white " href="material/pages/billing.html">
+        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+          <i class="material-icons opacity-10">receipt_long</i>
+        </div>
+        <span class="nav-link-text ms-1">Nilai</span>
       </a>
     </li>

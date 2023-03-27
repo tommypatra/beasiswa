@@ -19,6 +19,7 @@ class CreateFileWebsTable extends Migration
             $table->string("slug")->nullable();
             $table->text("deskripsi")->nullable();
             $table->date("tgl")->nullable();
+            $table->integer("view")->define(0);
             $table->foreignId("user_id")->nullable();
             $table->foreign("user_id")->references("id")->on("users")->restrictOnDelete();
             $table->foreignId("file_id")->unique();

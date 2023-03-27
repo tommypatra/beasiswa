@@ -29,13 +29,13 @@ function sel2_aktif2(vselector, vModal=null, vallow=false, vtags=false){
   sel2_datalokal(vselector, dataparent, vModal, vallow, vtags);
 }
 
-function sel2_tahun(vselector, vModal=null, vallow=false, vtags=false){
+function sel2_tahun(vselector, vTahun=null, vModal=null, vallow=false, vtags=false){
   let thn=new Date().getFullYear();
   thn=thn+1;
   let list_thn=[];
   let x=1;
   list_thn[0]={id:"",text:""};
-  for(i=(thn);i>=(thn-4);i--){
+  for(i=(thn);i>=vTahun;i--){
     list_thn[x]={id:i,text:i};
     x++;
   }
