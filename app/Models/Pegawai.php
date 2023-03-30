@@ -9,24 +9,24 @@ class Pegawai extends Model
     //
     protected $guarded = ["id"];
 
-    public function verifikasi()
-    {
-        return $this->hasMany(Verifikasi::class);
-    }
-
-    public function pjs()
-    {
-        return $this->hasMany(Pjs::class);
-    }
-
     public function beasiswa()
     {
         return $this->hasMany(Beasiswa::class);
     }
 
+    public function verifikasi()
+    {
+        return $this->hasMany(Verifikasi::class);
+    }
+
     public function bagian()
     {
         return $this->belongsTo(Bagian::class);
+    }
+
+    public function ruangPenguji()
+    {
+        return $this->belongsTo(RuangPenguji::class);
     }
 
     public function user()

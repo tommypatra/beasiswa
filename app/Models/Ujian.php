@@ -9,9 +9,9 @@ class Ujian extends Model
     //
     protected $guarded = ["id"];
 
-    public function sesi()
+    public function sesiUjian()
     {
-        return $this->hasMany(Sesi::class);
+        return $this->hasMany(SesiUjian::class);
     }
 
     public function beasiswa()

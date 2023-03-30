@@ -9,23 +9,13 @@ class Sesi extends Model
     //
     protected $guarded = ["id"];
 
-    public function pj()
+    public function sesiUjian()
     {
-        return $this->hasMany(Pj::class);
+        return $this->hasMany(SesiUjian::class);
     }
 
-    public function ruang()
+    public function beasiswa()
     {
-        return $this->belongsTo(Ruang::class);
-    }
-
-    public function ujian()
-    {
-        return $this->belongsTo(Ujian::class);
-    }
-
-    public function pesertaSesi()
-    {
-        return $this->belongsTo(PesertaSesi::class);
+        return $this->belongsTo(Beasiswa::class);
     }
 }

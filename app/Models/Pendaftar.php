@@ -9,9 +9,9 @@ class Pendaftar extends Model
     //
     protected $guarded = ["id"];
 
-    public function peserta()
+    public function ruangPendaftar()
     {
-        return $this->hasMany(Peserta::class);
+        return $this->hasMany(RuangPendaftar::class);
     }
 
     public function upload()

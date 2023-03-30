@@ -18,6 +18,10 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(Bagian::class);
     }
+    public function bagian()
+    {
+        return $this->belongsTo(Bagian::class);
+    }
 
     public function prodi()
     {
@@ -28,9 +32,4 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    // public function fileUpload()
-    // {
-    //     return $this->belongsTo(FileUpload::class);
-    // }
 }

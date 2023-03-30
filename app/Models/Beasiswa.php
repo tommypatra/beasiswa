@@ -19,9 +19,9 @@ class Beasiswa extends Model
         return $this->belongsTo(Pegawai::class);
     }
 
-    public function pendaftar()
+    public function ujian()
     {
-        return $this->hasMany(Pendaftar::class);
+        return $this->hasMany(Ujian::class);
     }
 
     public function syarat()
@@ -29,8 +29,18 @@ class Beasiswa extends Model
         return $this->hasMany(Syarat::class);
     }
 
-    public function ujian()
+    public function pendaftar()
     {
-        return $this->hasMany(Ujian::class);
+        return $this->hasMany(Pendaftar::class);
+    }
+
+    public function ruangBeasiswa()
+    {
+        return $this->hasMany(RuangBeasiswa::class);
+    }
+
+    public function sesi()
+    {
+        return $this->hasMany(Sesi::class);
     }
 }
