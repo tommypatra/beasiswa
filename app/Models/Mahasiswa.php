@@ -18,10 +18,6 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(Bagian::class);
     }
-    public function bagian()
-    {
-        return $this->belongsTo(Bagian::class);
-    }
 
     public function prodi()
     {
