@@ -55,7 +55,6 @@
                                         <th><input type="checkbox" class="cekSemua"></th>
                                         <th>No</th>
                                         <th>Ujian</th>
-                                        <th>Jumlah Sesi</th>
                                         <th>Keterangan</th>
                                         <th>Aktif</th>
                                         <th>Aksi</th>
@@ -81,7 +80,7 @@
             <input type="hidden" name="id" id="id-ujian">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">FORM SYARAT DOKUMEN</h5>
+                    <h5 class="modal-title">UJIAN BEASISWA</h5>
                     <button type="button" class="btn btn-sm" data-bs-dismiss="modal" aria-label="Close">X</button>
                 </div>
                 <div class="modal-body ">
@@ -90,10 +89,6 @@
                         <div class="col-sm-8">
                             <label class="col-form-label">Nama Ujian</label>
                             <input type="text" class="form-control validate[required]" name="ujian" id="ujian" placeholder="ujian">
-                        </div>
-                        <div class="col-sm-4">
-                            <label class="col-form-label">Jumlah Sesi</label>
-                            <input type="number" class="form-control validate[required]" name="jumlah_sesi" id="jumlah_sesi" placeholder="sesi">
                         </div>
                     </div>
 
@@ -238,7 +233,6 @@
                 {data: 'cek',className: "text-center", width:"5%", orderable: false, searchable: false},
                 {data: 'no', width:"5%",searchable: false},
                 {data: 'ujian', width:"40%",},
-                {data: 'jumlah_sesi', width:"5%",},
                 {data: 'keterangan', width:"30%"},
                 {data: 'aktif', width:"5%",orderable: false, searchable: false},
                 {data: 'action', width:"5%",className: "text-center", orderable: false, searchable: false},

@@ -105,6 +105,21 @@
                     </div>
 
                     <div class="row input-group input-group-outline">
+                        <div class="col-sm-4">
+                            <label class="col-form-label">Jumlah Sesi</label>
+                            <input type="number" class="form-control validate[required]" name="sesi" id="sesi">
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="col-form-label">Peserta Per Ruangan</label>
+                            <input type="number" class="form-control validate[required]" name="peserta_ruang" id="peserta_ruang" >
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="col-form-label">Ruangan Per Sesi</label>
+                            <input type="number" class="form-control validate[required]" name="ruang_sesi" id="ruang_sesi">
+                        </div>
+                    </div>
+
+                    <div class="row input-group input-group-outline">
                         <label class="col-form-label">Aktif</label>
                         <div class="col-sm-4">
                             <select class="form-control validate[required]" name="aktif" id="aktif">                                
@@ -250,6 +265,9 @@
             $('#daftar_selesai').val(dt.daftar_selesai);
             $('#verifikasi_mulai').val(dt.verifikasi_mulai);
             $('#verifikasi_selesai').val(dt.verifikasi_selesai);
+            $('#sesi').val(dt.sesi);
+            $('#ruang_sesi').val(dt.ruang_sesi);
+            $('#peserta_ruang').val(dt.peserta_ruang);
             $('#tahun').val(dt.tahun).trigger('change');
             $('#jenis_id').val(dt.jenis_id).trigger('change');
             $('#aktif').val(dt.aktif).trigger('change');

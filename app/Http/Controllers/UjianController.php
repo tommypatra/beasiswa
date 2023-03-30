@@ -30,7 +30,6 @@ class UjianController extends Controller
             'ujian',
             'keterangan',
             'aktif',
-            'jumlah_sesi',
             'beasiswa_id'
         )
             ->with(["beasiswa.jenis"])
