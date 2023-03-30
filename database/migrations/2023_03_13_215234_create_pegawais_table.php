@@ -18,7 +18,7 @@ class CreatePegawaisTable extends Migration
             $table->string("no_pegawai", 150)->unique();
             $table->foreignId("user_id");
             $table->foreignId("bagian_id");
-            $table->enum("aktif", ["0", "1"])->default("0");
+            $table->boolean("aktif")->default(false);
             $table->timestamps();
             $table->foreign("user_id")->references("id")->on("users")->restrictOnDelete();
             $table->foreign("bagian_id")->references("id")->on("bagians")->restrictOnDelete();

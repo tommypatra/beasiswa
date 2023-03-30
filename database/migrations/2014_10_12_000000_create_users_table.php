@@ -29,7 +29,7 @@ class CreateUsersTable extends Migration
             $table->string('twitter')->nullable();
             $table->date('tanggallahir')->nullable();
             $table->enum("kel", ["L", "P"])->default("L");
-            $table->enum("aktif", ["0", "1"])->default("0");
+            $table->boolean("aktif")->default(false);
 
             $table->timestamps();
         });

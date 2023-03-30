@@ -16,7 +16,7 @@ class CreateJenisTable extends Migration
         Schema::create('jenis', function (Blueprint $table) {
             $table->id();
             $table->string("jenis", 150)->nullable();
-            $table->enum("aktif", ["0", "1"])->default("0");
+            $table->boolean("aktif")->default(false);
             $table->timestamps();
         });
     }

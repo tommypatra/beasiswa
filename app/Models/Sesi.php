@@ -23,4 +23,9 @@ class Sesi extends Model
     {
         return $this->belongsTo(Ujian::class);
     }
+
+    public function pesertaSesi()
+    {
+        return $this->belongsTo(PesertaSesi::class);
+    }
 }

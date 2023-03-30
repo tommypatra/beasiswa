@@ -22,7 +22,7 @@ class CreateMahasiswasTable extends Migration
             $table->foreignId("user_id");
             $table->foreignId("prodi_id")->nullable();
             $table->foreignId("bagian_id");
-            $table->enum("aktif", ["0", "1"])->default("0");
+            $table->boolean("aktif")->default(false);
             $table->timestamps();
             $table->foreign("user_id")->references("id")->on("users")->restrictOnDelete();
             $table->foreign("prodi_id")->references("id")->on("prodis")->restrictOnDelete();

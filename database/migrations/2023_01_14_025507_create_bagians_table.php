@@ -16,7 +16,7 @@ class CreateBagiansTable extends Migration
         Schema::create('bagians', function (Blueprint $table) {
             $table->id();
             $table->string("bagian", 150)->nullable();
-            $table->enum("aktif", ["0", "1"])->default("0");
+            $table->boolean("aktif")->default(false);
             $table->timestamps();
         });
     }

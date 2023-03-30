@@ -19,7 +19,7 @@ class CreateBeritasTable extends Migration
             $table->string("slug")->unique();
             $table->date("tgl")->nullable();
             $table->text("konten")->nullable();
-            $table->enum("aktif", ["0", "1"])->default("0");
+            $table->boolean("aktif")->default(false);
             $table->timestamps();
             $table->foreignId("user_id");
             $table->foreign("user_id")->references("id")->on("users")->restrictOnDelete();

@@ -17,7 +17,7 @@ class CreateProdisTable extends Migration
             $table->id();
             $table->string("prodi", 150)->nullable();
             $table->foreignId("fakultas_id");
-            $table->enum("aktif", ["0", "1"])->default("0");
+            $table->boolean("aktif")->default(false);
             $table->timestamps();
             $table->foreign("fakultas_id")->references("id")->on("fakultas")->restrictOnDelete();
         });

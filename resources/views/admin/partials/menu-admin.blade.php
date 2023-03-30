@@ -15,13 +15,13 @@
                   </a>
               </li>
               <li class="nav-item ">
-                  <a class="nav-link text-white" href="https://material-dashboard-pro-laravel.creative-tim.com/users-management">
+                  <a class="nav-link text-white" href="{{ route('syarat') }}">
                   <span class="sidenav-mini-icon"><i class="material-icons opacity-10">navigate_next</i></span>
                   <span class="sidenav-normal  ms-2  ps-1"> Syarat</span>
                   </a>
               </li>
               <li class="nav-item ">
-                <a class="nav-link text-white" href="https://material-dashboard-pro-laravel.creative-tim.com/users-management">
+                <a class="nav-link text-white" href="{{ route('ujian') }}">
                 <span class="sidenav-mini-icon"><i class="material-icons opacity-10">navigate_next</i></span>
                 <span class="sidenav-normal  ms-2  ps-1"> Ujian</span>
                 </a>

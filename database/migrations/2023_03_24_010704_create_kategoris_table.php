@@ -16,8 +16,8 @@ class CreateKategorisTable extends Migration
         Schema::create('kategoris', function (Blueprint $table) {
             $table->id();
             $table->string("kategori", 250)->nullable();
-            $table->enum("profil", ["0", "1"])->default("0");
-            $table->enum("aktif", ["0", "1"])->default("0");
+            $table->boolean("profil")->default(false);
+            $table->boolean("aktif")->default(false);
             $table->timestamps();
             $table->foreignId("user_id");
             $table->foreign("user_id")->references("id")->on("users")->restrictOnDelete();

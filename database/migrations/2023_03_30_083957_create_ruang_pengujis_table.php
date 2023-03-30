@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVerifikasisTable extends Migration
+class CreateRuangPengujisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateVerifikasisTable extends Migration
      */
     public function up()
     {
-        Schema::create('verifikasis', function (Blueprint $table) {
+        Schema::create('ruang_pengujis', function (Blueprint $table) {
             $table->id();
-            $table->boolean("status")->default(false);
-            $table->text("keterangan")->nullable();
-            $table->foreignId("upload_id");
+            $table->foreignId("ruang_beasiswa_id");
             $table->foreignId("pegawai_id");
             $table->timestamps();
-            $table->foreign("upload_id")->references("id")->on("uploads")->restrictOnDelete();
+            $table->foreign("ruang_beasiswa_id")->references("id")->on("ruang_beasiswas")->restrictOnDelete();
             $table->foreign("pegawai_id")->references("id")->on("pegawais")->restrictOnDelete();
         });
     }
@@ -32,6 +30,6 @@ class CreateVerifikasisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('verifikasis');
+        Schema::dropIfExists('ruang_pengujis');
     }
 }

@@ -25,7 +25,7 @@ class CreateFileWebsTable extends Migration
             $table->foreignId("file_id")->unique();
             $table->foreign("file_id")->references("id")->on("files")->restrictOnDelete();
             $table->timestamps();
-            $table->enum("aktif", ["0", "1"])->default("0");
+            $table->boolean("aktif")->default(false);
         });
     }
 

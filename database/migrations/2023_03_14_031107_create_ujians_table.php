@@ -16,10 +16,9 @@ class CreateUjiansTable extends Migration
         Schema::create('ujians', function (Blueprint $table) {
             $table->id();
             $table->string("ujian", 150)->nullable();
-            $table->date("tgl_mulai")->nullable();
-            $table->date("tgl_selesai")->nullable();
+            $table->string("keterangan")->nullable();
             $table->foreignId("beasiswa_id");
-            $table->enum("aktif", ["0", "1"])->default("0");
+            $table->boolean("aktif")->default(false);
             $table->timestamps();
             $table->foreign("beasiswa_id")->references("id")->on("beasiswas")->restrictOnDelete();
         });

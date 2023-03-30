@@ -14,11 +14,6 @@ class Ujian extends Model
         return $this->hasMany(Sesi::class);
     }
 
-    public function ujianPeserta()
-    {
-        return $this->hasMany(UjianPeserta::class);
-    }
-
     public function beasiswa()
     {
         return $this->belongsTo(Beasiswa::class);

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePesertasTable extends Migration
+class CreateRuangPendaftarsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreatePesertasTable extends Migration
      */
     public function up()
     {
-        Schema::create('pesertas', function (Blueprint $table) {
+        Schema::create('ruang_pendaftars', function (Blueprint $table) {
             $table->id();
-            $table->enum("lulus", ["0", "1"])->nullable();
-            $table->text("keterangan")->nullable();
+            $table->foreignId("ruang_beasiswa_id");
             $table->foreignId("pendaftar_id");
+            $table->float("nilai", 4, 2)->nullable();
             $table->timestamps();
+            $table->foreign("ruang_beasiswa_id")->references("id")->on("ruang_beasiswas")->restrictOnDelete();
             $table->foreign("pendaftar_id")->references("id")->on("pendaftars")->restrictOnDelete();
         });
     }
@@ -30,6 +31,6 @@ class CreatePesertasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pesertas');
+        Schema::dropIfExists('ruang_pendaftars');
     }
 }

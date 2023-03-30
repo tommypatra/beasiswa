@@ -17,8 +17,8 @@ class CreateFilesTable extends Migration
             $table->id();
             $table->string("path", 150)->nullable();
             $table->text("detail")->nullable();
-            $table->enum("is_image", ["0", "1"])->default("0");
-            $table->enum("is_file", ["0", "1"])->default("0");
+            $table->boolean("is_image")->default(false);
+            $table->boolean("is_file")->default(true);
             $table->foreignId("user_id");
             $table->timestamps();
             $table->foreign("user_id")->references("id")->on("users")->restrictOnDelete();

@@ -16,7 +16,7 @@ class CreateRuangsTable extends Migration
         Schema::create('ruangs', function (Blueprint $table) {
             $table->id();
             $table->string("ruang", 150)->nullable();
-            $table->enum("aktif", ["0", "1"])->default("0");
+            $table->boolean("aktif")->default(false);
             $table->timestamps();
         });
     }

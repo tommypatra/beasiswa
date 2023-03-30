@@ -11,6 +11,8 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\BeasiswaController;
+use App\Http\Controllers\SyaratController;
+use App\Http\Controllers\UjianController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +50,22 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::middleware(['akses'])->group(function () {
         Route::get('/set-akses/{id}/{akunId}', [LoginController::class, 'setAkses'])->name('set-akses');
+
+        //ujian
+        Route::get('/ujian', [UjianController::class, 'index'])->name('ujian');
+        Route::post('/ujian-init', [UjianController::class, 'init'])->name('ujian-init');
+        Route::post('/ujian-read', [UjianController::class, 'read'])->name('ujian-read');
+        Route::post('/ujian-save', [UjianController::class, 'save'])->name('ujian-save');
+        Route::post('/ujian-delete', [UjianController::class, 'delete'])->name('ujian-delete');
+        Route::post('/ujian-search', [UjianController::class, 'search'])->name('ujian-search');
+
+        //syarat
+        Route::get('/syarat', [SyaratController::class, 'index'])->name('syarat');
+        Route::post('/syarat-init', [SyaratController::class, 'init'])->name('syarat-init');
+        Route::post('/syarat-read', [SyaratController::class, 'read'])->name('syarat-read');
+        Route::post('/syarat-save', [SyaratController::class, 'save'])->name('syarat-save');
+        Route::post('/syarat-delete', [SyaratController::class, 'delete'])->name('syarat-delete');
+        Route::post('/syarat-search', [SyaratController::class, 'search'])->name('syarat-search');
 
         //beasiswa
         Route::get('/beasiswa', [BeasiswaController::class, 'index'])->name('beasiswa');

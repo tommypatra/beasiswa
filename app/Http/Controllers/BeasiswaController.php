@@ -88,6 +88,9 @@ class BeasiswaController extends Controller
             'nama' => 'required',
             'jenis_id' => 'required',
             'tahun' => 'required',
+            'sesi' => 'required',
+            'peserta_ruang' => 'required',
+            'ruang_sesi' => 'required',
             'daftar_mulai' => 'required',
             'daftar_selesai' => 'required|after_or_equal:daftar_mulai',
             'verifikasi_mulai' => 'required|after_or_equal:daftar_selesai',
@@ -96,6 +99,9 @@ class BeasiswaController extends Controller
         ];
 
         $niceNames = [
+            'peserta_ruang' => 'peserta per rungan',
+            'ruang_sesi' => 'ruangan per sesi',
+            'daftar_mulai' => 'required',
             'nama' => 'nama beasiswa',
             'jenis_id' => 'jenis',
             'daftar_mulai' => 'daftar mulai',

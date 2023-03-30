@@ -21,9 +21,12 @@ class CreateBeasiswasTable extends Migration
             $table->date("daftar_selesai")->nullable();
             $table->date("verifikasi_mulai")->nullable();
             $table->date("verifikasi_selesai")->nullable();
+            $table->smallInteger("sesi")->nullable();
+            $table->smallInteger("peserta_ruang")->nullable();
+            $table->smallInteger("ruang_sesi")->nullable();
             $table->foreignId("jenis_id");
             $table->foreignId("pegawai_id");
-            $table->enum("aktif", ["0", "1"])->default("0");
+            $table->boolean("aktif")->default(false);
             $table->timestamps();
             $table->foreign("jenis_id")->references("id")->on("jenis")->restrictOnDelete();
             $table->foreign("pegawai_id")->references("id")->on("pegawais")->restrictOnDelete();
