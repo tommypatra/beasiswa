@@ -123,6 +123,11 @@
     <script type="text/javascript">
         sel2_aktif2("#aktif");
 
+        //mengecek semua ceklist
+        $(".cekSemua").change(function () {
+            $(".cekbaris").prop('checked', $(this).prop("checked"));
+        });
+
         $('.datepicker').bootstrapMaterialDatePicker({
             weekStart: 0,
             time: false,

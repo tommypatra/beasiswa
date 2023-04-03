@@ -23,10 +23,16 @@
               <li class="nav-item ">
                 <a class="nav-link text-white" href="{{ route('ujian') }}">
                 <span class="sidenav-mini-icon"><i class="material-icons opacity-10">navigate_next</i></span>
-                <span class="sidenav-normal  ms-2  ps-1"> Ujian</span>
+                <span class="sidenav-normal  ms-2  ps-1"> Materi Ujian</span>
                 </a>
             </li>
-          </ul>
+            <li class="nav-item ">
+              <a class="nav-link text-white" href="{{ route('ruang-ujian') }}">
+              <span class="sidenav-mini-icon"><i class="material-icons opacity-10">navigate_next</i></span>
+              <span class="sidenav-normal  ms-2  ps-1"> Ruang Ujian</span>
+              </a>
+          </li>
+        </ul>
       </div>    
     </li>    
 

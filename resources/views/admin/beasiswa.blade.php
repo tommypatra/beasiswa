@@ -152,6 +152,11 @@
         sel2_tahun("#tahun",parseInt("{{ config('app.apptahun') }} "));
         sel2_datalokal("#jenis_id");
 
+        //mengecek semua ceklist
+        $(".cekSemua").change(function () {
+            $(".cekbaris").prop('checked', $(this).prop("checked"));
+        });
+
 
         $('.datepicker').bootstrapMaterialDatePicker({
             weekStart: 0,

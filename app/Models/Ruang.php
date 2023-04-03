@@ -9,8 +9,8 @@ class Ruang extends Model
     //
     protected $guarded = ["id"];
 
-    public function ruangBeassiwa()
+    public function ruangBeasiswa()
     {
-        return $this->hasMany(RuangBeassiwa::class);
+        return $this->hasMany(RuangBeasiswa::class);
     }
 }

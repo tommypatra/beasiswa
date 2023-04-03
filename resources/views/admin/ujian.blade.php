@@ -132,6 +132,11 @@
         sel2_datalokal("#tahun");
         sel2_datalokal("#beasiswa_id");
 
+        //mengecek semua ceklist
+        $(".cekSemua").change(function () {
+            $(".cekbaris").prop('checked', $(this).prop("checked"));
+        });
+
         $('.datepicker').bootstrapMaterialDatePicker({
             weekStart: 0,
             time: false,
@@ -268,7 +273,7 @@
         function fillform(vdt){
             let dt=vdt[0];
             $('#id-ujian').val(dt.id);
-            $('#nama').val(dt.nama);
+            $('#ujian').val(dt.ujian);
             $('#keterangan').val(dt.keterangan);
             $('#wajib').val(dt.wajib).trigger('change');
             $('#aktif').val(dt.aktif).trigger('change');

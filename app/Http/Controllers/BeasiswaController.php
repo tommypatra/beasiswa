@@ -173,19 +173,25 @@ class BeasiswaController extends Controller
         return response()->json($retval);
     }
 
-    public function search(Request $request)
+    public static function search(Request $request)
     {
         $retval = array("status" => false, "messages" => ["tidak ditemukan"], "data" => []);
-        $data = Beasiswa::with(["jenis", "pegawai.user"]);
-        if ($request['srchFld']) {
+        $request['srchFld'] = (!$request['srchFld']) ? "id" : $request['srchFld'];
+        $request['srchGrp'] = (!$request['srchGrp']) ? "where" : $request['srchGrp'];
+
+        if ($request['srchVal']) {
+            $data = Beasiswa::with(["jenis", "pegawai.user"])
+                ->orderBy('daftar_mulai', 'DESC')
+                ->where('aktif', 1);
+
             if ($request['srchGrp'] == 'like')
                 $data->where($request['srchFld'], 'like', '%' . $request['srchVal'] . '%');
             else
                 $data->where($request['srchFld'], $request['srchVal']);
-        }
 
-        if ($data->count() > 0)
-            $retval = array("status" => true, "messages" => ["data ditemukan"], "data" => $data->get());
+            if ($data->count() > 0)
+                $retval = array("status" => true, "messages" => ["data ditemukan"], "data" => $data->get());
+        }
 
         return response()->json($retval);
     }

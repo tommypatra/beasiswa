@@ -17,33 +17,26 @@ class Akses
     {
         $hakakses = [];
         $allowAkses = true;
-        $allowSite = true;
-
         $session = session()->all();
         $auth = auth()->user();
-
-        $siteReg = \MyApp::allowheader();
-        if (!$siteReg['status']) {
-            $allowSite = false;
-        }
 
         // $route = explode("-", $request->route()->uri);
         // $hakakses = \MyApp::hakakses("/" . $route[0]);
         // if (!$hakakses['r'])
-        //     $allow = false;
+        //     $allowAkses = false;
 
-        // if ($allow && isset($route[1])) {
+        // if ($allowAkses && isset($route[1])) {
         //     if ($route[1] == "update" && !$hakakses['u'])
-        //         $allow = false;
+        //         $allowAkses = false;
         //     elseif ($route[1] == "delete" && !$hakakses['d'])
-        //         $allow = false;
+        //         $allowAkses = false;
         //     elseif ($route[1] == "create" && (!$hakakses['c'] && !$hakakses['u']))
-        //         $allow = false;
+        //         $allowAkses = false;
         //     elseif ($route[1] == "upload" && (!$hakakses['u']))
-        //         $allow = false;
+        //         $allowAkses = false;
         // }
 
-        if (!$allowSite || !$allowAkses) {
+        if (!$allowAkses) {
             if ($request->ajax()) {
                 $retval = array("status" => false, "messages" => ["akses ditolak"]);
                 return response()->json($retval);
@@ -52,7 +45,7 @@ class Akses
             }
         }
 
-        $request->merge(array("hakakses" => $hakakses, "vauth" => $auth, "vsession" => $session));
+        $request->merge(array("hakakses" => $hakakses));
         return $next($request);
     }
 }

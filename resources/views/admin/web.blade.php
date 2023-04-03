@@ -36,6 +36,7 @@
 
   <link href="plugins/toaster/css/bootstrap-toaster.min.css" rel="stylesheet">
   <link href="plugins/select2/dist/css/select2.min.css" rel="stylesheet"> 
+  <link href="plugins/select2/dist/css/select2.custom.css" rel="stylesheet"> 
   <link href="plugins/loading/loading.css" rel="stylesheet">   
   <style>
     .sidenav {
@@ -80,6 +81,9 @@
         @endif
         @if(session()->get('akses') == 2)  
           @include('admin.partials.menu-pegawai')
+        @endif
+        @if(session()->get('akses') == 3)  
+          @include('admin.partials.menu-mahasiswa')
         @endif
 
         @include('admin.partials.menu-general')

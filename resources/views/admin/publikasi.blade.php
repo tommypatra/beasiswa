@@ -121,6 +121,11 @@
         sel2_aktif2("#aktif");
         sel2_datalokal("#kategori");
 
+        //mengecek semua ceklist
+        $(".cekSemua").change(function () {
+            $(".cekbaris").prop('checked', $(this).prop("checked"));
+        });
+        
         $('.datepicker').bootstrapMaterialDatePicker({
             weekStart: 0,
             time: false,

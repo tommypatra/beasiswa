@@ -171,16 +171,37 @@ class PendaftarController extends Controller
         return response()->json($retval);
     }
 
-    public function search(Request $request)
+    // public function search(Request $request)
+    // {
+    //     $retval = array("status" => false, "messages" => ["maaf, tidak ditemukan"], "data" => []);
+    //     $data = User::with(["mahasiswa"])
+    //         ->where('nama', 'like', '%' . $request['cari'] . '%')
+    //         ->orWhere('email', 'like', '%' . $request['cari'] . '%')
+    //         ->get();
+    //     if ($data->mahasiswa->count() > 0) {
+    //         $retval = array("status" => true, "messages" => ["data ditemukan"], $data);
+    //     }
+    //     return response()->json($retval);
+    // }
+
+
+    public static function search(Request $request)
     {
-        $retval = array("status" => false, "messages" => ["maaf, tidak ditemukan"], "data" => []);
-        $data = User::with(["mahasiswa"])
-            ->where('nama', 'like', '%' . $request['cari'] . '%')
-            ->orWhere('email', 'like', '%' . $request['cari'] . '%')
-            ->get();
-        if ($data->mahasiswa->count() > 0) {
-            $retval = array("status" => true, "messages" => ["data ditemukan"], $data);
+        $retval = array("status" => false, "messages" => ["tidak ditemukan"], "data" => []);
+        $request['srchFld'] = (!$request['srchFld']) ? "id" : $request['srchFld'];
+        $request['srchGrp'] = (!$request['srchGrp']) ? "where" : $request['srchGrp'];
+
+        if ($request['srchVal']) {
+            $data = User::with(["mahasiswa"]);
+            if ($request['srchGrp'] == 'like')
+                $data->where($request['srchFld'], 'like', '%' . $request['srchVal'] . '%');
+            else
+                $data->where($request['srchFld'], $request['srchVal']);
+
+            if ($data->count() > 0)
+                $retval = array("status" => true, "messages" => ["data ditemukan"], "data" => $data->get());
         }
+
         return response()->json($retval);
     }
 
