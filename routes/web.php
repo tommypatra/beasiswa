@@ -14,6 +14,7 @@ use App\Http\Controllers\BeasiswaController;
 use App\Http\Controllers\SyaratController;
 use App\Http\Controllers\UjianController;
 use App\Http\Controllers\RuangBeasiswaController;
+use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\PendaftaranBeasiswaController;
 
 
@@ -78,12 +79,21 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::middleware(['akses'])->group(function () {
             //pendaftaran-beasiswa
-            Route::get('/pendaftaranbeasiswa', [PendaftaranBeasiswaController::class, 'index'])->name('ruang-ujian');
-            Route::any('/pendaftaranbeasiswa-init', [PendaftaranBeasiswaController::class, 'init'])->name('ruang-ujian-init');
-            Route::post('/pendaftaranbeasiswa-read', [PendaftaranBeasiswaController::class, 'read'])->name('ruang-ujian-read');
-            Route::post('/pendaftaranbeasiswa-save', [PendaftaranBeasiswaController::class, 'save'])->name('ruang-ujian-save');
-            Route::post('/pendaftaranbeasiswa-delete', [PendaftaranBeasiswaController::class, 'delete'])->name('ruang-ujian-delete');
-            Route::post('/pendaftaranbeasiswa-search', [PendaftaranBeasiswaController::class, 'search'])->name('ruang-ujian-search');
+            Route::get('/pendaftaranbeasiswa', [PendaftaranBeasiswaController::class, 'index'])->name('pendaftaranbeasiswa');
+            Route::post('/pendaftaranbeasiswa-init', [PendaftaranBeasiswaController::class, 'init'])->name('pendaftaranbeasiswa-init');
+            Route::post('/pendaftaranbeasiswa-formupload', [PendaftaranBeasiswaController::class, 'formUpload'])->name('pendaftaranbeasiswa-formupload');
+            Route::post('/pendaftaranbeasiswa-upload', [PendaftaranBeasiswaController::class, 'upload'])->name('pendaftaranbeasiswa-upload');
+            Route::post('/pendaftaranbeasiswa-upload-delete', [PendaftaranBeasiswaController::class, 'uploadDelete'])->name('pendaftaranbeasiswa-upload-delete');
+            Route::post('/pendaftaranbeasiswa-read', [PendaftaranBeasiswaController::class, 'read'])->name('pendaftaranbeasiswa-read');
+            Route::post('/pendaftaranbeasiswa-save', [PendaftaranBeasiswaController::class, 'save'])->name('pendaftaranbeasiswa-save');
+            Route::post('/pendaftaranbeasiswa-delete', [PendaftaranBeasiswaController::class, 'delete'])->name('pendaftaranbeasiswa-delete');
+            Route::post('/pendaftaranbeasiswa-search', [PendaftaranBeasiswaController::class, 'search'])->name('pendaftaranbeasiswa-search');
+
+            //peserta-beasiswa
+            Route::get('/peserta', [PesertaController::class, 'index'])->name('peserta');
+            Route::post('/peserta-init', [PesertaController::class, 'init'])->name('peserta-init');
+            Route::post('/peserta-read', [PesertaController::class, 'read'])->name('peserta-read');
+            Route::post('/peserta-search', [PesertaController::class, 'search'])->name('peserta-search');
 
             //ruang-ujian
             Route::get('/ruangujian', [RuangBeasiswaController::class, 'index'])->name('ruang-ujian');

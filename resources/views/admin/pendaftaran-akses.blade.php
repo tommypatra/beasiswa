@@ -248,7 +248,7 @@
         $("#mahasiswa-sinkron").click(function() {
             if(confirm('apakah anda yakin?')){
                 let formVal={email:"{{ auth()->user()->email }}"};
-                appAjax('https://sia.iainkendari.ac.id/api/daftarnim', formVal).done(function(vRet) {
+                appAjax('https://sia.iainkendari.ac.id/api/v2/daftarnim', formVal).done(function(vRet) {
                     if(vRet.status){
                         $.each(vRet.data, function( key, dp ) {
                             regMahasiswa(dp);

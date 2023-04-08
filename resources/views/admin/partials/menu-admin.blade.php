@@ -31,7 +31,13 @@
               <span class="sidenav-mini-icon"><i class="material-icons opacity-10">navigate_next</i></span>
               <span class="sidenav-normal  ms-2  ps-1"> Ruang Ujian</span>
               </a>
-          </li>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link text-white" href="{{ route('peserta') }}">
+              <span class="sidenav-mini-icon"><i class="material-icons opacity-10">navigate_next</i></span>
+              <span class="sidenav-normal  ms-2  ps-1"> Pendaftar</span>
+              </a>
+            </li>
         </ul>
       </div>    
     </li>    

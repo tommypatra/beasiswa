@@ -24,21 +24,26 @@ class AdminController extends Controller
     //     return response()->json($retval);
     // }
 
+
     public static function search(Request $request)
     {
-        $retval = array("status" => false, "messages" => ["maaf, tidak ditemukan"], "data" => []);
-        $request['srchFld'] = (!$request['srchFld']) ? "id" : $request['srchFld'];
-        $request['srchGrp'] = (!$request['srchGrp']) ? "where" : $request['srchGrp'];
-        $request['srchVal'] = (!$request['srchVal']) ? auth()->user()->id : $request['srchVal'];
-
-        $data = User::with(["admin.file"]);
-        if ($request['srchGrp'] == 'like')
-            $data->where($request['srchFld'], 'like', '%' . $request['srchVal'] . '%');
-        else
-            $data->where($request['srchFld'], $request['srchVal']);
-
-        if ($data->count() > 0)
-            $retval = array("status" => true, "messages" => ["data ditemukan"], "data" => $data->get());
+        $retval = array("status" => false, "messages" => ["tidak ditemukan"], "data" => []);
+        if ($request['cari']) {
+            $data = User::with(["admin.file"]);
+            foreach ($request['cari'] as $i => $dp) {
+                $srchFld = (!isset($dp['srchFld'])) ? "id" : $dp['srchFld'];
+                $srchGrp = (!isset($dp['srchGrp'])) ? "where" : $dp['srchGrp'];
+                $srchVal = (!isset($dp['srchVal'])) ? null : $dp['srchVal'];
+                if ($srchVal) {
+                    if ($srchGrp == 'like')
+                        $data->where($srchFld, 'like', '%' . $srchVal . '%');
+                    else
+                        $data->where($srchFld, $srchVal);
+                }
+            }
+            if ($data->count() > 0)
+                $retval = array("status" => true, "messages" => ["data ditemukan"], "data" => $data->get());
+        }
 
         return response()->json($retval);
     }

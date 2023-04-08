@@ -178,9 +178,9 @@
         function cariBeasiswa(vTahun){
             var formVal={
                 _token:$("meta[name='csrf-token']").attr("content"),
-                srchFld:'tahun',
-                srchGrp:'where',
-                srchVal:vTahun
+                cari:{
+                    0:{srchFld:'tahun',srchVal:vTahun},
+                },
             };
             let vElement="#beasiswa_id";
             $(vElement).empty();
@@ -324,9 +324,9 @@
             resetForm();
             var formVal={
                 _token:$("meta[name='csrf-token']").attr("content"),
-                srchFld:'id',
-                srchGrp:'where',
-                srchVal:$(this).data("id")
+                cari:{
+                    0:{srchVal:$(this).data("id")},
+                },
             };
             appAjax("{{ route('syarat-search') }}", formVal).done(function(vRet) {
                 if(vRet.status){

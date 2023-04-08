@@ -310,9 +310,9 @@
             resetForm();
             var formVal={
                 _token:$("meta[name='csrf-token']").attr("content"),
-                srchFld:'id',
-                srchGrp:'where',
-                srchVal:$(this).data("id")
+                cari:{
+                    0:{srchVal:$(this).data("id")},
+                },
             };
             appAjax("{{ route('beasiswa-search') }}", formVal).done(function(vRet) {
                 if(vRet.status){

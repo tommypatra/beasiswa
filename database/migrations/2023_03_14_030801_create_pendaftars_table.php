@@ -17,7 +17,7 @@ class CreatePendaftarsTable extends Migration
             $table->id();
             $table->foreignId("beasiswa_id");
             $table->foreignId("mahasiswa_id");
-            $table->boolean("lulus")->nullable();
+            $table->boolean("verifikasi")->nullable();
             $table->text("keterangan")->nullable();
             $table->timestamps();
             $table->foreign("beasiswa_id")->references("id")->on("beasiswas")->restrictOnDelete();

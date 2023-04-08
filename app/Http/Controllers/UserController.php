@@ -212,20 +212,23 @@ class UserController extends Controller
         return response()->json($retval);
     }
 
+
     public static function search(Request $request)
     {
         $retval = array("status" => false, "messages" => ["tidak ditemukan"], "data" => []);
-        $request['srchFld'] = (!$request['srchFld']) ? "id" : $request['srchFld'];
-        $request['srchGrp'] = (!$request['srchGrp']) ? "where" : $request['srchGrp'];
-
-        if ($request['srchVal']) {
+        if ($request['cari']) {
             $data = User::orderBy('nama', 'ASC');
-
-            if ($request['srchGrp'] == 'like')
-                $data->where($request['srchFld'], 'like', '%' . $request['srchVal'] . '%');
-            else
-                $data->where($request['srchFld'], $request['srchVal']);
-
+            foreach ($request['cari'] as $i => $dp) {
+                $srchFld = (!isset($dp['srchFld'])) ? "id" : $dp['srchFld'];
+                $srchGrp = (!isset($dp['srchGrp'])) ? "where" : $dp['srchGrp'];
+                $srchVal = (!isset($dp['srchVal'])) ? null : $dp['srchVal'];
+                if ($srchVal) {
+                    if ($srchGrp == 'like')
+                        $data->where($srchFld, 'like', '%' . $srchVal . '%');
+                    else
+                        $data->where($srchFld, $srchVal);
+                }
+            }
             if ($data->count() > 0)
                 $retval = array("status" => true, "messages" => ["data ditemukan"], "data" => $data->get());
         }

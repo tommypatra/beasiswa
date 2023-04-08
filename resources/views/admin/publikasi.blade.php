@@ -283,7 +283,12 @@
         //ganti
         $(document).on("click",".btn-ganti",function(){
             resetForm();
-            var formVal={_token:$("meta[name='csrf-token']").attr("content"),srchFld:'id',srchGrp:'where',srchVal:$(this).data("id")};
+            var formVal={
+                _token:$("meta[name='csrf-token']").attr("content"),
+                cari:{
+                    0:{srchVal:$(this).data("id")},
+                },
+            };
             appAjax("{{ route('publikasi-search') }}", formVal).done(function(vRet) {
                 if(vRet.status){
                     var myModal = new bootstrap.Modal(document.getElementById('modal-publikasi'), {
