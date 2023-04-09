@@ -7,6 +7,7 @@
 @endsection
 
 @section('container')
+<input type="hidden" name="pendaftar_id" id="pendaftar_id">
 
 <div class="row">
     <div class="col-12">
@@ -76,8 +77,6 @@
 <div class="modal fade modal-xl" id="modal-verifikasi" role="dialog">
     <div class="modal-dialog">
         <form id="fverifikasi">
-            <input type="hidden" name="pendaftar_id" id="pendaftar_id">
-            <input type="hidden" name="verifikasi_id" id="verifikasi_id">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">VERIFIKASI DOKUMEN</h5>
@@ -118,6 +117,51 @@
 </div>
 <!-- AKHIR MODAL -->
 
+<!-- MULAI MODAL -->
+<div class="modal fade modal" id="modal-verifikasi-file" role="dialog">
+    <div class="modal-dialog">
+        <form id="fverifikasifile">
+            <input type="hidden" name="id" id="verifikasi_id">
+            <input type="hidden" name="upload_id" id="upload_id">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">VERIFIKASI DOKUMEN</h5>
+                    <button type="button" class="btn btn-sm" data-bs-dismiss="modal" aria-label="Close">X</button>
+                </div>
+                <div class="modal-body ">
+
+                    <div class="row input-group input-group-outline">
+                        <div class="col-sm-12">
+                            <div id="verifikasi-info"></div>
+                            <div class="text-sm" id="verifikasi-link"></div>
+                        </div>
+                    </div>
+                    <div class="row input-group input-group-outline">
+                        <div class="col-sm-8">
+                            <label class="col-form-label">Status</label>
+                            <select class="form-control validate[required]" name="status" id="verifikasi_status">                                
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row input-group input-group-outline">
+                        <label class="col-form-label">Keterangan</label>
+                        <div class="col-sm-12">
+                            <textarea rows="4" class="form-control" name="keterangan" id="verifikasi_keterangan" ></textarea>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- AKHIR MODAL -->
+
 @endsection
 
 @section("scriptJs")
@@ -129,6 +173,7 @@
     <script src="plugins/tinymce/tinymce.min.js"></script>
     <script type="text/javascript">
         sel2_aktif2("#aktif");
+        sel2_aktif3("#verifikasi_status");
         sel2_datalokal("#tahun");
         sel2_datalokal("#beasiswa_id");
 
@@ -218,18 +263,19 @@
             },
             buttons: [
                 {
-                    text: 'Refresh',
+                    text: '<span class="material-icons">refresh</span>',
+                    className: 'btn btn-secondary btn-sm',
                     action: function ( e, dt, node, config ) {
                         refresh();
                     }                
                 },
             ],
             columns: [
-                {data: 'cek',className: "text-center", width:"5%", orderable: false, searchable: false},
-                {data: 'no', width:"5%",searchable: false},
+                {data: 'cek', className: 'text-center', width:"5%", orderable: false, searchable: false},
+                {data: 'no', className: 'text-center', width:"5%",searchable: false},
                 {data: 'mahasiswa', width:"40%",orderable: false, searchable: false},
                 {data: 'file_upload', width:"20%",orderable: false, searchable: false},
-                {data: 'verifikasi', width:"20%"},
+                {data: 'verifikasi', className: 'text-center', width:"20%"},
             ],
             initComplete: function (e) {
                 var api = this.api();
@@ -253,29 +299,79 @@
         }
 
         $(document).on("click",".btn-verifikasi",function(){
-            $("#pendaftar_id").val($(this).data("pendaftar_id"));
-            var myModal = new bootstrap.Modal(document.getElementById('modal-verifikasi'), {
+            let formVal = [];
+            formVal.push({name:"_token",value:$("meta[name='csrf-token']").attr("content")});
+            formVal.push({name:"beasiswa_id",value:$("#beasiswa_id").val()});
+            formVal.push({name:"pendaftar_id",value:$(this).data("pendaftar_id")});
+            if(confirm("Apakah verifikasi peserta ini diterima ?")){
+                formVal.push({name:"verifikasi",value:1});
+            }else{
+                formVal.push({name:"verifikasi",value:0});
+            }
+            appAjax('{{ route("verifikasi-update-status") }}', formVal).done(function(vRet) {
+                if(vRet.status){
+                    refresh();
+                }
+                showmymessage(vRet.messages,vRet.status);
+            });
+        });
+
+        $(document).on("click",".btn-verifikasi-file",function(){
+            $("#upload_id").val($(this).data("upload_id"));
+            var myModal = new bootstrap.Modal(document.getElementById('modal-verifikasi-file'), {
                 backdrop: 'static',
                 keyboard: false,
             });
             myModal.toggle();
-            loadVerifikasi();
+            loadVerifikasiFile();
         });
 
-        function loadVerifikasi(){
+        function loadVerifikasiFile(){
+
+            $('#verifikasi_id').val("");
+            $('#verifikasi_keterangan').val("");
+            $('#verifikasi_status').val("").trigger('change');
+
             var formVal={
                 _token:$("meta[name='csrf-token']").attr("content"),
                 cari:{
-                    0:{srchVal:$("#pendaftar_id").val()},
+                    0:{srchFld:'id',srchVal:$("#upload_id").val()},
                 }
             };
-            appAjax("{{ route('peserta-search') }}", formVal).done(function(vRet) {
-                //refreshbeasiswa(vRet.data);
-                if($vRet.status){
-                    let filesyarats=$vRet.data[0].beasiswa.syarat;
+            appAjax("{{ route('verifikasi-search') }}", formVal).done(function(vRet) {
+                if(vRet.status){
+                    let data=vRet.data[0];
+                    let verifikasi=data.verifikasi;
+                    let file=data.file;
+                    let detailfile=JSON.parse(file.detail);
+                    $('#verifikasi-info').html('<h5>'+data.syarat.nama+'</h5>'+data.pendaftar.mahasiswa.user.nama);
+                    $('#verifikasi-link').html('File : <a href="{{ asset("storage") }}/'+file.path+'" target="_blank">'+detailfile.originalName+'</a>');
+                    if(verifikasi.length>0){
+                        console.log(verifikasi[0]);
+                        $('#verifikasi_id').val(verifikasi[0].id);
+                        $('#verifikasi_keterangan').val(verifikasi[0].keterangan);
+                        $('#verifikasi_status').val(verifikasi[0].status).trigger('change');
+                    }
                 }
             });
         }
 
+        $("#fverifikasifile").submit(function(e) {
+            e.preventDefault();
+            let formVal = $(this).serializeArray();
+            formVal.push({name:"_token",value:$("meta[name='csrf-token']").attr("content")});
+            formVal.push({name:"beasiswa_id",value:$("#beasiswa_id").val()});
+            if($(this).validationEngine('validate')){
+                appAjax('{{ route("verifikasi-save") }}', $.param(formVal)).done(function(vRet) {
+                    //resetForm();
+                    refresh();
+                    if(vRet.status){
+                        $('#verifikasi_id').val(vRet.id);
+                        //tutupModal();
+                    }
+                    showmymessage(vRet.messages,vRet.status);
+                });
+            }
+        });
     </script>
 @endsection

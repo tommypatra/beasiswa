@@ -61,7 +61,7 @@ class PesertaController extends Controller
             })
             ->editColumn('verifikasi', function ($row) {
                 if ($row->verifikasi === null)
-                    $retval = '<span class="badge bg-gradient-warning">Belum</span>';
+                    $retval = '<span class="badge bg-gradient-secondary">Belum</span>';
                 else {
                     $sts = "success";
                     $lbl = "MS";
@@ -69,7 +69,7 @@ class PesertaController extends Controller
                         $sts = "danger";
                         $lbl = "TMS";
                     }
-                    $retval = '<span class="badge bg-gradient-' . $lblsts . '">Belum</span>';
+                    $retval = '<span class="badge bg-gradient-' . $sts . '">' . $lbl . '</span>';
                     $retval .= '<div class="text-sm">' . $row->keterangan . '</div>';
                 }
                 return $retval;
@@ -79,6 +79,11 @@ class PesertaController extends Controller
                 $syarats = $row->beasiswa->syarat;
                 // $file = $row->upload;
                 $retval = '<div id="upload-' . $row->id . '">';
+                if (count($row->beasiswa->syarat) > 0)
+                    $retval .= '
+                        <button type="button" class="btn btn-sm btn-success btn-verifikasi" data-pendaftar_id="' . $row->id . '">
+                            <span class="material-icons">playlist_add_check</span> Verifikasi Peserta
+                        </button>';
 
                 if (count($syarats) > 0) {
                     $retval .= '<ul class="text-sm">';
@@ -86,14 +91,22 @@ class PesertaController extends Controller
                         $wajib = ($dp->wajib) ? "[wajib]" : "[boleh kosong]";
                         $retval .= '<li>' . $dp->nama . ' ' . $wajib . '</li>';
                         $files = $dp->upload;
-                        $retval .= '<ul class="text-xs">';
+                        $retval .= '<ul class="text-sm">';
                         if (count($files) > 0) {
                             foreach ($files as $i => $df) {
+                                $verval = 'btn-secondary';
+                                $tooltip = 'title="belum terverifikasi"';
+                                if (count($df->verifikasi) > 0) {
+                                    $verval = ($df->verifikasi[0]->status) ? "btn-success" : "btn-danger";
+                                    $tooltip = '';
+                                    if ($df->verifikasi[0]->keterangan)
+                                        $tooltip = 'title="' . $df->verifikasi[0]->keterangan . '"';
+                                }
                                 $detfile = json_decode($df->file->detail);
                                 $url = asset('storage') . '/' . $df->file->path;
-                                $retval .= '<li>
+                                $retval .= '<li ' . $tooltip . '>
                                                 <a href="' . $url . '" target="_blank">' . $detfile->originalName . '</a>
-                                                <a href="javascript:;" type="button" class="btn btn-sm btn-verifikasi" data-upload_id="' . $df->id . '">
+                                                <a href="javascript:;" class="btn ' . $verval . ' btn-sm btn-verifikasi-file" data-upload_id="' . $df->id . '">
                                                     <span class="material-icons">playlist_add_check</span>
                                                 </a>
                                             </li>';
@@ -126,11 +139,11 @@ class PesertaController extends Controller
                     </div>
                 </div>
                 <div class="mb-3 text-xs"><span class="material-icons">access_time</span> ' . $row->created_at->toDateTimeString() . '</div>';
-                if (count($row->beasiswa->syarat) > 0)
-                    $retval .= '
-                        <button type="button" class="btn btn-sm btn-success btn-verifikasi" data-pendaftar_id="' . $row->id . '">
-                            <span class="material-icons">playlist_add_check</span> Verifikasi
-                        </button>';
+                // if (count($row->beasiswa->syarat) > 0)
+                //     $retval .= '
+                //         <button type="button" class="btn btn-sm btn-success btn-verifikasi" data-pendaftar_id="' . $row->id . '">
+                //             <span class="material-icons">playlist_add_check</span> Verifikasi
+                //         </button>';
                 return $retval;
             })
             ->rawColumns(['no', 'file_upload', 'mahasiswa', 'verifikasi', 'cek'])

@@ -29,6 +29,13 @@ function sel2_aktif2(vselector, vModal=null, vallow=false, vtags=false){
   sel2_datalokal(vselector, dataparent, vModal, vallow, vtags);
 }
 
+function sel2_aktif3(vselector, vModal=null, vallow=false, vtags=false){
+  let dataparent=[{id: "", text: "-pilih-"},
+          {id:"1",text:"Memenuhi"}, 
+          {id:"0",text:'Tidak Memenuhi'}];
+  sel2_datalokal(vselector, dataparent, vModal, vallow, vtags);
+}
+
 function sel2_tahun(vselector, vTahun=null, vModal=null, vallow=false, vtags=false){
   let thn=new Date().getFullYear();
   thn=thn+1;

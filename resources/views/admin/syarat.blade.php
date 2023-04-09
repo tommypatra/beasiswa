@@ -149,6 +149,13 @@
             time: false,
         });
 
+        function cekPilihBeasiswa(){
+            if($("#beasiswa_id").val()===null || $("#beasiswa_id").val()===""){
+                alert("pilih beasiswa terlebih dahulu!");
+                die();
+            }
+        }
+
         init();
         function init() {
             let formVal={_token:$("meta[name='csrf-token']").attr("content")};
@@ -229,13 +236,15 @@
             },
             buttons: [
                 {
-                    text: 'Tambah',
+                    text: '<span class="material-icons">add_circle_outline</span>',
+                    className: 'btn btn-secondary btn-sm',
                     action: function ( e, dt, node, config ) {
                         tambah();
                     }                
                 },
                 {
-                    text: 'Refresh',
+                    text: '<span class="material-icons">refresh</span>',
+                    className: 'btn btn-secondary btn-sm',
                     action: function ( e, dt, node, config ) {
                         refresh();
                     }                
@@ -288,17 +297,14 @@
         }
 
         function tambah(){
-            if($("#beasiswa_id").val()===null || $("#beasiswa_id").val()===""){
-                alert("pilih beasiswa terlebih dahulu!");
-            }else{
-                resetForm();
-                var myModal1 = new bootstrap.Modal(document.getElementById('modal-syarat'), {
-                    backdrop: 'static',
-                    keyboard: false,
-                });
-                myModal1.toggle();
-                //loadModal();
-            }
+            cekPilihBeasiswa();
+            resetForm();
+            var myModal1 = new bootstrap.Modal(document.getElementById('modal-syarat'), {
+                backdrop: 'static',
+                keyboard: false,
+            });
+            myModal1.toggle();
+            //loadModal();
         }
 
         $("#fbeasiswa").submit(function(e) {

@@ -38,6 +38,12 @@
               <span class="sidenav-normal  ms-2  ps-1"> Pendaftar</span>
               </a>
             </li>
+            <li class="nav-item ">
+              <a class="nav-link text-white" href="{{ route('ruangpeserta') }}">
+              <span class="sidenav-mini-icon"><i class="material-icons opacity-10">navigate_next</i></span>
+              <span class="sidenav-normal  ms-2  ps-1"> Ruang Ujian Peserta</span>
+              </a>
+            </li>
         </ul>
       </div>    
     </li>    

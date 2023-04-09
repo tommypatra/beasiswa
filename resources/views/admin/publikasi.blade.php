@@ -191,13 +191,15 @@
             },
             buttons: [
                 {
-                    text: 'Tambah',
+                    text: '<span class="material-icons">add_circle_outline</span>',
+                    className: 'btn btn-secondary btn-sm',
                     action: function ( e, dt, node, config ) {
                         tambah();
                     }                
                 },
                 {
-                    text: 'Refresh',
+                    text: '<span class="material-icons">refresh</span>',
+                    className: 'btn btn-secondary btn-sm',
                     action: function ( e, dt, node, config ) {
                         refresh();
                     }                

@@ -16,6 +16,8 @@ use App\Http\Controllers\UjianController;
 use App\Http\Controllers\RuangBeasiswaController;
 use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\PendaftaranBeasiswaController;
+use App\Http\Controllers\VerifikasiController;
+use App\Http\Controllers\RuangPesertaController;
 
 
 /*
@@ -78,6 +80,20 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/upload-delete', [UploadController::class, 'delete'])->name('upload-delete');
 
         Route::middleware(['akses'])->group(function () {
+            //ruang-peserta
+            Route::get('/ruangpeserta', [RuangPesertaController::class, 'index'])->name('ruangpeserta');
+            Route::post('/ruangpeserta-init', [RuangPesertaController::class, 'init'])->name('ruangpeserta-init');
+            Route::get('/ruangpeserta-fpembagian/{id}', [RuangPesertaController::class, 'formPembagian'])->name('ruangpeserta-fpembagian');
+            Route::post('/ruangpeserta-read', [RuangPesertaController::class, 'read'])->name('ruangpeserta-read');
+
+            //verifikasi-dokumen
+            Route::post('/verifikasi-save', [VerifikasiController::class, 'save'])->name('verifikasi-save');
+            Route::post('/verifikasi-create', [VerifikasiController::class, 'create'])->name('verifikasi-create');
+            Route::post('/verifikasi-update', [VerifikasiController::class, 'update'])->name('verifikasi-update');
+            Route::post('/verifikasi-delete', [VerifikasiController::class, 'delete'])->name('verifikasi-delete');
+            Route::post('/verifikasi-search', [VerifikasiController::class, 'search'])->name('verifikasi-search');
+            Route::post('/verifikasi-update-status', [VerifikasiController::class, 'updateVerifikasi'])->name('verifikasi-update-status');
+
             //pendaftaran-beasiswa
             Route::get('/pendaftaranbeasiswa', [PendaftaranBeasiswaController::class, 'index'])->name('pendaftaranbeasiswa');
             Route::post('/pendaftaranbeasiswa-init', [PendaftaranBeasiswaController::class, 'init'])->name('pendaftaranbeasiswa-init');

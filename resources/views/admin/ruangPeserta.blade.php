@@ -13,7 +13,7 @@
         <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                 <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                    <h6 class="text-white text-capitalize ps-3">Ujian Beasiswa</h6>
+                    <h6 class="text-white text-capitalize ps-3">Dokumen Syarat Beasiswa</h6>
                 </div>
             </div>
             <div class="card-body pb-2">
@@ -54,9 +54,9 @@
                                     <tr>
                                         <th><input type="checkbox" class="cekSemua"></th>
                                         <th>No</th>
-                                        <th>Ujian</th>
-                                        <th>Keterangan</th>
-                                        <th>Aktif</th>
+                                        <th>Ruang</th>
+                                        <th>Penguji</th>
+                                        <th>Mahasiswa</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -74,21 +74,21 @@
 </div>
 
 <!-- MULAI MODAL -->
-<div class="modal fade modal-lg" id="modal-ujian" role="dialog">
+<div class="modal fade modal-lg" id="modal-pembagian-otomatis" role="dialog">
     <div class="modal-dialog">
-        <form id="fbeasiswa">
-            <input type="hidden" name="id" id="id-ujian">
+        <form id="fpembagianotomatis">
+            <input type="hidden" name="id" id="id-syarat">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">UJIAN BEASISWA</h5>
+                    <h5 class="modal-title">FORM PEMBAGIAN RUANGAN OTOMATIS</h5>
                     <button type="button" class="btn btn-sm" data-bs-dismiss="modal" aria-label="Close">X</button>
                 </div>
                 <div class="modal-body ">
 
                     <div class="row input-group input-group-outline">
-                        <div class="col-sm-8">
-                            <label class="col-form-label">Nama Ujian</label>
-                            <input type="text" class="form-control validate[required]" name="ujian" id="ujian" placeholder="ujian">
+                        <label class="col-form-label">Nama Syarat</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control validate[required]" name="nama" id="nama" placeholder="syarat">
                         </div>
                     </div>
 
@@ -100,6 +100,11 @@
                     </div>
 
                     <div class="row input-group input-group-outline">
+                        <div class="col-sm-4">
+                            <label class="col-form-label">Wajib</label>
+                            <select class="form-control validate[required] mb-3" name="wajib" id="wajib">                                
+                            </select>
+                        </div>
                         <div class="col-sm-4">
                             <label class="col-form-label">Aktif</label>
                             <select class="form-control validate[required]" name="aktif" id="aktif">                                
@@ -129,6 +134,7 @@
     <script src="plugins/tinymce/tinymce.min.js"></script>
     <script type="text/javascript">
         sel2_aktif2("#aktif");
+        sel2_aktif1("#wajib");
         sel2_datalokal("#tahun");
         sel2_datalokal("#beasiswa_id");
 
@@ -141,6 +147,21 @@
             weekStart: 0,
             time: false,
         });
+
+        $("#tahun").change(function(){
+            cariBeasiswa($(this).val());
+        })
+
+        $("#beasiswa_id").change(function(){
+            refresh();
+        })
+
+        function cekPilihBeasiswa(){
+            if($("#beasiswa_id").val()===null || $("#beasiswa_id").val()===""){
+                alert("pilih beasiswa terlebih dahulu!");
+                die();
+            }
+        }
 
         init();
         function init() {
@@ -160,28 +181,12 @@
             });
         };
 
-        $("#tahun").change(function(){
-            cariBeasiswa($(this).val());
-        })
-
-        $("#beasiswa_id").change(function(){
-            refresh();
-        })
-
-        function cekPilihBeasiswa(){
-            if($("#beasiswa_id").val()===null || $("#beasiswa_id").val()===""){
-                alert("pilih beasiswa terlebih dahulu!");
-                die();
-            }
-        }
-
         function cariBeasiswa(vTahun){
             var formVal={
                 _token:$("meta[name='csrf-token']").attr("content"),
                 cari:{
                     0:{srchFld:'tahun',srchVal:vTahun},
                 },
-
             };
             let vElement="#beasiswa_id";
             $(vElement).empty();
@@ -207,7 +212,7 @@
                 ["25", "50", "75", "Semua"]
             ],
             ajax: {
-                url: "{{ route('ujian-read') }}",
+                url: "{{ route('ruangpeserta-read') }}",
                 dataType: "json",
                 type: "POST",
                 data: function (d) {
@@ -219,7 +224,7 @@
                 },
             },
             "order": [
-                [2, "asc"],
+                // [2, "asc"],
             ],
             dom: '<"row"<"col-sm-6"B><"col-sm-6"f>> rt <"row"<"col-sm-4"l><"col-sm-4"i><"col-sm-4"p>>',
             language: {
@@ -237,6 +242,17 @@
                     }                
                 },
                 {
+                    text: '<span class="material-icons">domain</span>',
+                    className: 'btn btn-secondary btn-sm',
+                    action: function ( e, dt, node, config ) {
+                        cekPilihBeasiswa();
+                        let id=$("#beasiswa_id").val();
+                        let url='{{ route("ruangpeserta-fpembagian",[":id"]) }}';
+                        url = url.replace(':id', id);
+                        window.location.href = url;
+                    } 
+                },
+                {
                     text: '<span class="material-icons">refresh</span>',
                     className: 'btn btn-secondary btn-sm',
                     action: function ( e, dt, node, config ) {
@@ -247,9 +263,9 @@
             columns: [
                 {data: 'cek',className: "text-center", width:"5%", orderable: false, searchable: false},
                 {data: 'no', width:"5%",searchable: false},
-                {data: 'ujian', width:"40%",},
-                {data: 'keterangan', width:"30%"},
-                {data: 'aktif', width:"5%",orderable: false, searchable: false},
+                {data: 'ruang', width:"25%",},
+                {data: 'penguji', width:"30%",},
+                {data: 'mahasiswa', width:"30%"},
                 {data: 'action', width:"5%",className: "text-center", orderable: false, searchable: false},
             ],
             initComplete: function (e) {
@@ -275,24 +291,25 @@
 
         function resetForm(){
             $('#fbeasiswa')[0].reset();
-            $('#id-ujian').val("");
+            $('#id-syarat').val("");
             $('#wajib').val("").trigger('change');
             $('#aktif').val("").trigger('change');
         };
 
         function fillform(vdt){
             let dt=vdt[0];
-            $('#id-ujian').val(dt.id);
-            $('#ujian').val(dt.ujian);
+            $('#id-syarat').val(dt.id);
+            $('#nama').val(dt.nama);
             $('#keterangan').val(dt.keterangan);
             $('#wajib').val(dt.wajib).trigger('change');
             $('#aktif').val(dt.aktif).trigger('change');
         }
 
         function tambah(){
-            cekPilihBeasiswa();
+            pilihBeasiswa();
+
             resetForm();
-            var myModal1 = new bootstrap.Modal(document.getElementById('modal-ujian'), {
+            var myModal1 = new bootstrap.Modal(document.getElementById('modal-syarat'), {
                 backdrop: 'static',
                 keyboard: false,
             });
@@ -307,11 +324,11 @@
             formVal.push({name:"_token",value:$("meta[name='csrf-token']").attr("content")});
             formVal.push({name:"beasiswa_id",value:$("#beasiswa_id").val()});
             if($(this).validationEngine('validate')){
-                appAjax('{{ route("ujian-save") }}', $.param(formVal)).done(function(vRet) {
+                appAjax('{{ route("syarat-save") }}', $.param(formVal)).done(function(vRet) {
                     //resetForm();
                     refresh();
                     if(vRet.status){
-                        $('#id-ujian').val(vRet.id);
+                        $('#id-syarat').val(vRet.id);
                     }
                     showmymessage(vRet.messages,vRet.status);
                 });
@@ -327,9 +344,9 @@
                     0:{srchVal:$(this).data("id")},
                 },
             };
-            appAjax("{{ route('ujian-search') }}", formVal).done(function(vRet) {
+            appAjax("{{ route('syarat-search') }}", formVal).done(function(vRet) {
                 if(vRet.status){
-                    var myModal = new bootstrap.Modal(document.getElementById('modal-ujian'), {
+                    var myModal = new bootstrap.Modal(document.getElementById('modal-syarat'), {
                         backdrop: 'static',
                         keyboard: false,
                     });
@@ -345,7 +362,7 @@
         function hapus(idTerpilih){
             var formVal={_token:$("meta[name='csrf-token']").attr("content"),id:idTerpilih};
             if(idTerpilih.length > 0 && confirm("apakah anda yakin?")){
-                appAjax("{{ route('ujian-delete') }}", formVal).done(function(vRet) {
+                appAjax("{{ route('syarat-delete') }}", formVal).done(function(vRet) {
                     if(vRet.status){
                         refresh();
                     }

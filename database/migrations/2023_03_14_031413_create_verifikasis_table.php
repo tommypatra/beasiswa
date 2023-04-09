@@ -17,7 +17,7 @@ class CreateVerifikasisTable extends Migration
             $table->id();
             $table->boolean("status")->default(false);
             $table->text("keterangan")->nullable();
-            $table->foreignId("upload_id");
+            $table->foreignId("upload_id")->unique();
             $table->foreignId("pegawai_id");
             $table->timestamps();
             $table->foreign("upload_id")->references("id")->on("uploads")->restrictOnDelete();

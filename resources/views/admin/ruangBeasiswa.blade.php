@@ -137,6 +137,13 @@
             time: false,
         });
 
+        function cekPilihBeasiswa(){
+            if($("#beasiswa_id").val()===null || $("#beasiswa_id").val()===""){
+                alert("pilih beasiswa terlebih dahulu!");
+                die();
+            }
+        }
+
         init();
         function init() {
             //untuk tahun beasiswa
@@ -245,13 +252,15 @@
             },
             buttons: [
                 {
-                    text: 'Tambah',
+                    text: '<span class="material-icons">add_circle_outline</span>',
+                    className: 'btn btn-secondary btn-sm',
                     action: function ( e, dt, node, config ) {
                         tambah();
                     }                
                 },
                 {
-                    text: 'Refresh',
+                    text: '<span class="material-icons">refresh</span>',
+                    className: 'btn btn-secondary btn-sm',
                     action: function ( e, dt, node, config ) {
                         refresh();
                     }                
@@ -315,18 +324,14 @@
         }
 
         function tambah(){
-            if($("#beasiswa_id").val()===null || $("#beasiswa_id").val()===""){
-                alert("pilih beasiswa terlebih dahulu!");
-            }else{
-                resetForm();
-                $('#insert-pegawai').val('1');
-                var myModal1 = new bootstrap.Modal(document.getElementById('modal-ruang-beasiswa'), {
-                    backdrop: 'static',
-                    keyboard: false,
-                });
-                myModal1.toggle();
-                //loadModal();
-            }
+            cekPilihBeasiswa();
+            resetForm();
+            $('#insert-pegawai').val('1');
+            var myModal1 = new bootstrap.Modal(document.getElementById('modal-ruang-beasiswa'), {
+                backdrop: 'static',
+                keyboard: false,
+            });
+            myModal1.toggle();
         }
 
         $("#fruangbeasiswa").submit(function(e) {
